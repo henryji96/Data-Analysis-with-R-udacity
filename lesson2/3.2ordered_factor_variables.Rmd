@@ -1,0 +1,59 @@
+---
+title: "3.2ordered_factor_variables.Rmd"
+author: "Wenhan Ji"
+date: "2017Äê4ÔÂ3ÈÕ"
+output: html_document
+---
+
+[tutorial link](http://stats.idre.ucla.edu/r/modules/factor-variables/)
+
+
+#1. Creating factor variables
+```{r}
+#generate numeric vector
+state<-sample(0:1 ,20,replace=TRUE)
+state
+is.factor(state)
+is.numeric(state)
+
+#generate factor variable
+state.f<-factor(state,labels=c("private","public"))
+state.f
+is.factor(state.f)
+
+#generate a character vector
+status.rank <- c("low", "middle", "low", "low", "low", "low", "middle","low", "middle","middle", "middle", "middle", "middle",  "high", "high", "low", "middle","middle", "low", "high")
+is.character((status.rank))
+#use the levels argument to indicate the correct ordering of the categories
+status.rank.f<-factor(status.rank,levels=c("low","middle","high"))
+status.rank.f
+levels(status.rank.f)
+
+```
+
+#2. Creating ordered factor variables
+```{r}
+status.rank.o<-ordered(status.rank,levels=c("low","middle","high"))
+status.rank.o
+```
+#3. Adding and dropping levels in factor variables
+```{r}
+#add level
+length(status.rank.f)
+status.rank.f<-factor(status.rank.f,levels=c(levels(status.rank.f),"very.high"))
+status.rank.f[21] <- "very.high"
+status.rank.f
+```
+```{r}
+status.rank.f<-status.rank.f[status.rank.f!="very.high"]
+status.rank.f
+#drop the none exist level
+status.rank.f<-factor(status.rank.f)
+status.rank.f
+```
+```{r}
+table(state.f)
+table(status.rank.f)
+table(state.f,status.rank.f)
+```
+
