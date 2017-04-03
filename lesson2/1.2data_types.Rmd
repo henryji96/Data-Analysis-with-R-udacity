@@ -1,0 +1,141 @@
+---
+title: "data_types"
+author: "Wenhan Ji"
+date: "2017Äê4ÔÂ3ÈÕ"
+output: html_document
+---
+
+[Tutorial](http://www.statmethods.net/input/datatypes.html)
+
+#Data Types
+R has a wide variety of data types including scalars, vectors (numerical, character, logical), matrices, data frames, and lists.
+
+
+#Vectors
+
+###create vectors
+```{r}
+a<-c(3,1.1,2.2,-3) #numeric vector
+b<-c("one","two","three")#character vector
+c<-c(TRUE,FALSE,TRUE,FALSE)#logical vector
+a
+b 
+c
+```
+
+###Refer to elements of a vector using subscripts
+```{r}
+c(2,4)
+a[c(2,4)]# 2nd and 4th elements of vector
+a[1:3] #1st to 3rd elemets of a vector
+```
+
+#Matrices
+All columns in a matrix must have the same mode(numeric, character, etc.) and the same length. The general format is
+
+mymatrix <- matrix(vector, nrow=r, ncol=c, byrow=FALSE, 
+  	dimnames=list(char_vector_rownames, char_vector_colnames))
+
+byrow=TRUE indicates that the matrix should be filled by rows. byrow=FALSE indicates that the matrix should be filled by columns (the default). dimnames provides optional labels for the columns and rows.
+```{r}
+# generates 5 x 4 numeric matrix #fill by columns
+y<-matrix(1:20, nrow=5,ncol=4)
+y
+# another example
+cells <- c(1,26,24,68)
+rnames <- c("R1", "R2")
+cnames <- c("C1", "C2") 
+mymatrix <- matrix(cells, nrow=2, ncol=2, byrow=TRUE,
+  dimnames=list(rnames, cnames))
+mymatrix
+```
+
+#Data Frames
+A data frame is more general than a matrix, in that different columns can have different modes (numeric, character, factor, etc.). 
+
+```{r}
+d<-c(1,2,3,4)
+e<-c(TRUE,TRUE,TRUE,FALSE)
+f<-c("blue","green","grey",NA)
+
+mydf<-data.frame(d,e,f)
+names(mydf)<-c("ID","Passes","Color") #variable names
+mydf
+mydf[1:2] #columns 1,2 of df
+mydf[c("ID","Color")]#ID and Color column
+mydf$ID      #variable ID in the dataframe
+
+row.names(mydf)<-c("a","b","c","d") #instance names
+mydf
+```
+
+#Lists
+An ordered collection of objects (components). A list allows you to gather a variety of (possibly unrelated) objects under one name.
+
+```{r}
+# example of a list with 4 components - 
+# a string, a numeric vector, a dataframe, and a scaler 
+a<-c(1,2,3,4)
+list1 <- list(name="Fred", mynumbers=a, myframe=mydf, age=18)
+list1
+```
+```{r}
+# example of a list containing two lists 
+list2<-  list(name="Henry", mynumbers=a, myframe=mydf, age=21)
+v<-c(list1,list2)
+v[1:8]
+```
+```{r}
+#Identify elements of a list using the [[]] convention
+list1[[2]] # 2nd component of the list
+list1[["mynumbers"]] # component named mynumbers in list
+```
+
+#Factors
+Tell R that a variable is nominal by making it a factor.
+The factor stores the nominal values as a vector of integers in the range [ 1... k ] (where k is the number of unique values in the nominal variable), and an internal vector of character strings (the original values) mapped to these integers.
+```{r}
+# variable gender with 20 "male" entries and 
+# 30 "female" entries 
+c(rep("repeat", 3))
+gender <- c(rep("male",20), rep("female", 30),"Unknown") 
+gender <- factor(gender) 
+# stores gender as 20 1s and 30 2s and associates
+# 1=female, 2=male internally (alphabetically)
+# R now treats gender as a nominal variable 
+str(gender)
+summary(gender)
+```
+#Ordered factor
+An ordered factor is used to represent an ordinal variable.
+```{r}
+# recodes rating to 1,3,5 and associates
+# 5=large, 3=medium, 1=small internally
+# R now treats rating as ordinal
+rating<-c(rep("large",10),rep("small",3),rep("medium",5))
+table(rating)
+
+#map small to 1, medium to 3, large to 5
+rating<-ordered(rating,levels=c("small","medium","large"))
+                
+table(rating)
+levels(rating)
+
+```
+
+R will treat factors as nominal variables and ordered factors as ordinal variables in statistical proceedures and graphical analyses. 
+You can use options in the factor( ) and ordered( ) functions to control the mapping of integers to strings (overiding the alphabetical ordering). 
+
+#Useful Functions
+```{r}
+length(rating) # number of elements or components
+str(rating)    # structure of an object 
+class(rating)  # class or type of an object
+names(rating)  # names
+
+ls()# list current objects
+#rm(object) # delete an object
+```
+
+
+

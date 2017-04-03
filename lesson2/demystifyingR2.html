@@ -368,6 +368,17 @@ dim(answer)</code></pre>
 ## Honda Civic           light
 ## Toyota Corolla        light
 ## Lotus Europa          light</code></pre>
+<pre class="r"><code>mtcars[mtcars$mpg&gt;=30|mtcars$hp&lt;60,]</code></pre>
+<pre><code>##                 mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Fiat 128       32.4   4 78.7  66 4.08 2.200 19.47  1  1    4    1
+## Honda Civic    30.4   4 75.7  52 4.93 1.615 18.52  1  1    4    2
+## Toyota Corolla 33.9   4 71.1  65 4.22 1.835 19.90  1  1    4    1
+## Lotus Europa   30.4   4 95.1 113 3.77 1.513 16.90  1  1    5    2
+##                weight_class
+## Fiat 128              light
+## Honda Civic           light
+## Toyota Corolla        light
+## Lotus Europa          light</code></pre>
 <p>Once you have the answer, go the <a href="https://www.udacity.com/course/viewer#!/c-ud651/l-729069797/e-804129319/m-811719066">Udacity website</a> to continue with Lesson 2.</p>
 <p>Note: You use brackets around text followed by two parentheses to create a link. There must be no spaces between the brackets and the parentheses. Paste or type the link into the parentheses. This also works on the discussions!</p>
 <p>And if you want to see all of your HARD WORK from this file, click the <strong>KNIT HTML</strong> button now. (You may or may not need to restart R).</p>

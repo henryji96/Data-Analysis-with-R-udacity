@@ -1,0 +1,27 @@
+#What's Markdown?
+Markdown is a writing tool that allows you to write plain text while tagging your formatting.
+
+
+#Headings
+##Headings
+######Headings
+
+
+##Phrase emphasis
+*ltalic text*  
+**Bold text**
+
+
+##Listing items
+unordered lists
+
+- list item1
+- list item2
+
+ordered lists
+
+1. list item1
+2. list item2
+
+##Links
+This is the tutorial website [tutorial](https://www.youtube.com/watch?v=6A5EpqqDOdk)
