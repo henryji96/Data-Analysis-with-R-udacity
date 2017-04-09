@@ -2,27 +2,40 @@ Lesson 3
 ========================================================
 
 ***
-
 ### What to Do First?
-Notes:
-
+EDA means learn about surprises in the data.
+Features of data that may lead to unexpected results.
+Often, this is going to the format of producing summaries and visualizations of those individual variables.
 ***
 
 ### Pseudo-Facebook User Data
 Notes:
 
 ```{r Pseudo-Facebook User Data}
-
+getwd()
+list.files()
+pf<-read.csv('pseudo_facebook.tsv',sep='\t')
+dim(pf)
+names(pf)
 ```
 
 ***
-
+[themes](https://github.com/jrnold/ggthemes#examples)
+When you register at a websites, some sites have default setting that use the 1st day of the month under the birth day field. Some also use a default month of January. 
+In the case of Facebook, Jan and the 1st are the first drop down items that appear on the site. It's important to think about such details and the data generating process when exploring data.
 ### Histogram of Users' Birthdays
-Notes:
-
 ```{r Histogram of Users\' Birthdays}
-install.packages('ggplot2')
-library(ggplot2)
+#install.packages('ggplot2')
+#library(ggplot2)
+names(pf)
+summary(pf$dob_day)
+
+qplot(x=dob_day,data=pf,binwidth=2)+
+  scale_x_continuous(breaks=1:31)
+
+ggplot(aes(x = dob_day), data = pf) + 
+  geom_histogram(binwidth = 1) + 
+  scale_x_continuous(breaks = 1:31)
 ```
 
 ***

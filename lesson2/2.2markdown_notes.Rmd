@@ -15,8 +15,9 @@ Markdown is a writing tool that allows you to write plain text while tagging you
 ##Listing items
 unordered lists
 
-- list item1
-- list item2
+- list item-
+- list item-
++ list item+
 
 ordered lists
 

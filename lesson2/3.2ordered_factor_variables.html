@@ -126,10 +126,16 @@ $(document).ready(function () {
 <p><a href="http://stats.idre.ucla.edu/r/modules/factor-variables/">tutorial link</a></p>
 <div id="creating-factor-variables" class="section level1">
 <h1>1. Creating factor variables</h1>
+<p>Factor variables are categorical variables that can be either numeric or string variables. There are a number of advantages to converting categorical variables to factor variables. Perhaps the most important advantage is that they can be used in statistical modeling where they will be implemented correctly, i.e., they will then be assigned the correct number of degrees of freedom.</p>
+<ul>
+<li>The only required argument is a vector of values which can be either string or numeric.</li>
+<li>The levels argument, which determines the categories of the factor variable, and the default is the sorted list of all the distinct values of the data vector.</li>
+<li>he labels argument, which is a vector of values that will be the labels of the categories in the levels argument.</li>
+</ul>
 <pre class="r"><code>#generate numeric vector
 state&lt;-sample(0:1 ,20,replace=TRUE)
 state</code></pre>
-<pre><code>##  [1] 0 1 0 0 1 0 1 1 0 1 0 0 0 1 0 1 0 1 0 1</code></pre>
+<pre><code>##  [1] 0 0 1 1 1 1 0 0 0 0 1 0 0 0 0 1 0 0 1 0</code></pre>
 <pre class="r"><code>is.factor(state)</code></pre>
 <pre><code>## [1] FALSE</code></pre>
 <pre class="r"><code>is.numeric(state)</code></pre>
@@ -137,9 +143,9 @@ state</code></pre>
 <pre class="r"><code>#generate factor variable
 state.f&lt;-factor(state,labels=c(&quot;private&quot;,&quot;public&quot;))
 state.f</code></pre>
-<pre><code>##  [1] private public  private private public  private public  public 
-##  [9] private public  private private private public  private public 
-## [17] private public  private public 
+<pre><code>##  [1] private private public  public  public  public  private private
+##  [9] private private public  private private private private public 
+## [17] private private public  private
 ## Levels: private public</code></pre>
 <pre class="r"><code>is.factor(state.f)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
@@ -190,7 +196,7 @@ status.rank.f</code></pre>
 <pre class="r"><code>table(state.f)</code></pre>
 <pre><code>## state.f
 ## private  public 
-##      11       9</code></pre>
+##      13       7</code></pre>
 <pre class="r"><code>table(status.rank.f)</code></pre>
 <pre><code>## status.rank.f
 ##    low middle   high 
@@ -198,8 +204,8 @@ status.rank.f</code></pre>
 <pre class="r"><code>table(state.f,status.rank.f)</code></pre>
 <pre><code>##          status.rank.f
 ## state.f   low middle high
-##   private   5      5    1
-##   public    3      4    2</code></pre>
+##   private   2      8    3
+##   public    6      1    0</code></pre>
 </div>
 
 

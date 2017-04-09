@@ -1,10 +1,13 @@
 getwd()
-setwd('C:/Users/ji/Desktop/data science/R udacity/eda-course-materials/lesson2')
+setwd('F:/learn_data/R/Data-Analysis-with-R_udacity/lesson2')
 
 statesInfo <- read.csv('stateData.csv')
 head(statesInfo,3)
 str(statesInfo)
 dim(statesInfo)
+summary(statesInfo)
+names(statesInfo)
+row.names(statesInfo)
 ##subset 1
 stateSubset<-subset(statesInfo,state.region==1)
 head(stateSubset,3)

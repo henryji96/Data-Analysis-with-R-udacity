@@ -82,8 +82,8 @@ subset(mtcars,qsec<=16.9)
 (weight is measured in lb/1000)
 to a variable called lightCars. Print the numbers of cars and the subset to the console.
 ```{r}
-weight<-mtcars$wt*1000
-lightCars<-subset(mtcars,weight<=2000)
+
+lightCars<-subset(mtcars,(mtcars$wt*1000)<=2000)
 dim(lightCars)
 
 ```
@@ -93,9 +93,9 @@ to have the year of each car's model. We can create the variable
 mtcars$year. Here we'll assume that all of the models were from 1974.
 Run the code below.
 ```{r}
-mtcars$year <- 1974
+mtcars$year <- c(1974,2001)
 dim(mtcars)
-head(mtcars,2)
+head(mtcars,4)
 ```
 
 Notice how the number of variables changed in the work space. You can
@@ -167,8 +167,8 @@ need the knitr package to do that so let's install that now. **Uncomment** the
 following two lines of code and run them.
 
 ```{r}
- #install.packages('knitr', dependencies = T)
- #library(knitr)
+ install.packages('knitr', dependencies = T)
+ library(knitr)
 ```
 
 Once you've installed knitr, **comment** out the two lines of code above.

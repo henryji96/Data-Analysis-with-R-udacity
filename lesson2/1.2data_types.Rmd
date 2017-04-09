@@ -39,7 +39,7 @@ mymatrix <- matrix(vector, nrow=r, ncol=c, byrow=FALSE,
 byrow=TRUE indicates that the matrix should be filled by rows. byrow=FALSE indicates that the matrix should be filled by columns (the default). dimnames provides optional labels for the columns and rows.
 ```{r}
 # generates 5 x 4 numeric matrix #fill by columns
-y<-matrix(1:20, nrow=5,ncol=4)
+y<-matrix(1:20, nrow=2,ncol=10,byrow=TRUE)
 y
 # another example
 cells <- c(1,26,24,68)
@@ -76,14 +76,17 @@ An ordered collection of objects (components). A list allows you to gather a var
 # example of a list with 4 components - 
 # a string, a numeric vector, a dataframe, and a scaler 
 a<-c(1,2,3,4)
+f<-c("blue","green","grey",NA)
+mydf<-data.frame(a,f)
+
 list1 <- list(name="Fred", mynumbers=a, myframe=mydf, age=18)
 list1
 ```
 ```{r}
 # example of a list containing two lists 
-list2<-  list(name="Henry", mynumbers=a, myframe=mydf, age=21)
+list2<-  list(name="Henry", age=21)
 v<-c(list1,list2)
-v[1:8]
+v[1:7]
 ```
 ```{r}
 #Identify elements of a list using the [[]] convention
@@ -104,7 +107,10 @@ gender <- factor(gender)
 # 1=female, 2=male internally (alphabetically)
 # R now treats gender as a nominal variable 
 str(gender)
-summary(gender)
+
+#summary(gender)
+
+table(gender)
 ```
 #Ordered factor
 An ordered factor is used to represent an ordinal variable.
@@ -115,11 +121,15 @@ An ordered factor is used to represent an ordinal variable.
 rating<-c(rep("large",10),rep("small",3),rep("medium",5))
 table(rating)
 
+
+
 #map small to 1, medium to 3, large to 5
 rating<-ordered(rating,levels=c("small","medium","large"))
                 
 table(rating)
 levels(rating)
+
+str(rating)
 
 ```
 
@@ -131,10 +141,9 @@ You can use options in the factor( ) and ordered( ) functions to control the map
 length(rating) # number of elements or components
 str(rating)    # structure of an object 
 class(rating)  # class or type of an object
-names(rating)  # names
 
 ls()# list current objects
-#rm(object) # delete an object
+#rm() # delete an object
 ```
 
 
