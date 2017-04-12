@@ -1,0 +1,21 @@
+## Getting logical
+There are other ways we can transform one variable, besides using log or square root.   
+You wanna convert variables that have a lot of zero values to a new binary variable that has only true or false.  
+This is helpful because we wanna know whether a user has used a certain feature at all, instead of the number of times the user actually has used that feature.  
+
++ For example, it may no matter how many times a person check in but whether he had checked in.
+```{r}
+getwd()
+setwd('F:/learn_data/R/Data-Analysis-with-R_udacity/lesson3')
+pf<-read.csv('pseudo_facebook.tsv',sep='\t')
+
+summary(pf$mobile_likes)
+summary(pf$mobile_likes>0)
+length(pf$mobile_likes[pf$mobile_likes>0])
+
+
+pf$mobile_check_in<-factor(ifelse(pf$mobile_likes>0,TRUE,FALSE))
+summary(pf$mobile_check_in)
+
+```
+

@@ -1,0 +1,48 @@
+# [Cartesian coordinates](http://docs.ggplot2.org/current/coord_cartesian.html)
+## Usage
+coord_cartesian(xlim = NULL, ylim = NULL, expand = TRUE)
+
+## Arguments
+
+ + xlim, ylim  
+Limits for the x and y axes.
+ + expand  
+If TRUE, the default, adds a small expansion factor to the limits to ensure that data and axes don't overlap.   
+If FALSE, limits are taken exactly from the data or xlim/ylim.
+
+## Description  
+The Cartesian coordinate system is the most familiar, and common, type of coordinate system. Setting limits on the coordinate system will zoom the plot (like you're looking at it with a magnifying glass), and will not change the underlying data like setting limits on a scale will.
+
+## Examples
+```{r}
+data("mtcars")
+library(ggplot2)
+library(gridExtra)
+names(mtcars)
+str(mtcars)
+```
+```{r}
+# There are two ways of zooming the plot display: with scales or
+# with coordinate systems.  They work in two rather different ways.
+
+
+p0<-ggplot(data=mtcars,aes(disp,wt))+
+  geom_point(color='black')+
+  geom_smooth()+
+  scale_x_continuous(breaks=seq(0,500,50))
+# Setting the limits on a scale converts all values outside the range to NA.
+p1<-p0+scale_x_continuous(limits = c(325, 500))
+
+# Setting the limits on the coordinate system performs a visual zoom.
+# The data is unchanged, and we just view a small portion of the original
+# plot. Note how smooth continues past the points visible on this plot.
+p2<-p0+coord_cartesian(xlim = c(325, 500))
+# Simiarly, we can use expand = FALSE to turn off expansion with the
+# default limits
+p3<-p0+coord_cartesian(xlim = c(325, 500),expand = FALSE)
+
+
+grid.arrange(p0,p1,p2,p3,ncol=2)
+```
+
+

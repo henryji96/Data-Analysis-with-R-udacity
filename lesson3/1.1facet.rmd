@@ -1,0 +1,50 @@
+# [Facets (ggplot2)](http://www.cookbook-r.com/Graphs/Facets_(ggplot2)/)
+
+## Problem
+You want to do split up your data by one or more variables and plot the subsets of data together.
+## Solution
+We will use the tips dataset from the reshape2 package.
+```{r}
+library(ggplot2)
+library(reshape2)
+head(tips,3)
+```
+```{r}
+sp0 <- ggplot(data=tips,
+             aes(x=total_bill, y=tip/total_bill)) + geom_point(shape=1)
+#The data can be split up by one or two variables that vary on the #horizontal and/or vertical direction.
+#This is done by giving a formula to facet_grid(), of the form #vertical ~ horizontal.
+sp1<-sp0 + facet_grid(sex ~ day)
+#Instead of faceting with a variable in the horizontal or vertical #direction, facets can be placed next to each other, wrapping with #a certain number of columns or rows. The label for each plot will #be at the top of the plot.
+# Divide by day, going horizontally and wrapping with 2 columns
+sp2<-sp0+facet_wrap( ~ day, ncol=2)
+
+sp0
+sp1
+sp2
+```
+## Modifying facet label appearance
+```{r}
+sp1 +theme(strip.text.x = element_text(size=8, angle=35),
+          strip.text.y = element_text(size=12, face="bold"),
+          strip.background = element_rect(colour="grey",fill="pink"))
+```
+## Free scales
+Normally, the axis scales on each graph are fixed, which means that they have the same size and range. They can be made independent, by setting scales to free, free_x, or free_y.
+```{r}
+# A histogram of bill sizes
+hp <- ggplot(data=tips, 
+             aes(x=total_bill)) + geom_histogram(binwidth=2,colour="white")
+
+# Histogram of total_bill, divided by sex and smoker
+hp + facet_grid(sex ~ smoker)
+
+# Same as above, with scales="free_y"
+hp + facet_grid(sex ~ smoker, scales="free_y")
+
+# With panels that have the same scaling, but different range (and therefore different physical sizes)
+hp + facet_grid(sex ~ smoker, scales="free", space="free")
+
+
+```
+

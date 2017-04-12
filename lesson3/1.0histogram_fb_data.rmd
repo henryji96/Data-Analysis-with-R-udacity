@@ -1,0 +1,258 @@
+Lesson 3
+========================================================
+
+***
+### What to Do First?
+EDA means learn about surprises in the data.
+Features of data that may lead to unexpected results.
+Often, this is going to the format of producing summaries and visualizations of those individual variables.
+***
+
+### Pseudo-Facebook User Data
+```{r Pseudo-Facebook User Data}
+getwd()
+list.files()
+pf<-read.csv('pseudo_facebook.tsv',sep='\t')
+dim(pf)
+names(pf)
+```
+
+***
+[themes](https://github.com/jrnold/ggthemes#examples)
+When you register at a websites, some sites have default setting that use the 1st day of the month under the birth day field. Some also use a default month of January. 
+In the case of Facebook, Jan and the 1st are the first drop down items that appear on the site. It's important to think about such details and the data generating process when exploring data.
+### Histogram of Users' Birthdays
+```{r Histogram of Users\' Birthdays}
+library(ggplot2)
+names(pf)
+summary(pf$dob_day)
+
+qplot(x=dob_day,data=pf,binwidth=2)+
+  scale_x_continuous(breaks=1:31)
+
+ggplot(aes(x = dob_day), data = pf) + 
+  geom_histogram(binwidth = 1) + 
+  scale_x_continuous(breaks = 1:31)
+```
+### Faceting
+
++ (facet)[http://www.cookbook-r.com/Graphs/Facets_(ggplot2)/]
+
+1. facet_wrap(~variable)
+This helps you to create the same type of plot for each level of your categorical variable. 
+In our case, we wanna make histograms of dob day, one for each month of the year.
+
+2. facet_grid(vertical~horizontal)
+Variables that we wanna split over in the vertical and horizontal direction
+```{r Faceting}
+qplot(x=dob_day,data=pf,binwidth=1)+
+  scale_x_continuous(breaks=1:31)+
+  facet_wrap(~dob_month,ncol=4)
+
+ggplot(aes(x = dob_day), data = pf) + 
+  geom_histogram(binwidth = 1) + 
+  scale_x_continuous(breaks = 1:31)+
+  facet_wrap(~dob_month,ncol=3)
+
+```
+### Be Skeptical - Outliers and Anomalies
+Outliers have many types
+
+1. accurate data about an extreme case
+2. bad or limitations of your data  
+    +a normal value be replaced by an extreme value  
+    +an extreme value be replaced by a normal value([top-coded](https://en.wikipedia.org/wiki/Top-coded))
+
+#### What code would you enter to create a histogram of friend counts?
+##### long tail data
+This data can be common for some user level data.    
+Most people have friend_counts under 500.    
+While we may want to investigate some observations in this tail, we really want to examine users with friend counts well below 1000.  
+```{r Friend Count}
+str(pf)
+ggplot(aes(x=friend_count),data=pf)+
+  geom_histogram(binwidth=100)
+
+```
+### Limiting the Axes
+(scale_continuous)[http://docs.ggplot2.org/current/scale_continuous.html]
+```{r Limiting the Axes}
+ggplot(aes(x=friend_count),data=pf)+
+  geom_histogram(binwidth=100)+
+  scale_x_continuous(limits=c(0,1000))
+
+qplot(x=friend_count,data=pf,binwidth=1,xlim=c(0,1000))
+
+qplot(x=friend_count,data=pf)+
+  scale_x_continuous(limits=c(0,1000))
+```
+
+### Faceting Friend Count
+```{r Faceting Friend Count}
+# What code would you add to create a facet the histogram by gender?
+# Add it to the code below.
+qplot(x = friend_count, data = pf, binwidth = 10) +
+  scale_x_continuous(limits = c(0, 1000),breaks = seq(0, 1000, 50))+
+  facet_wrap(~gender)
+
+ggplot(aes(x = friend_count), data = pf) + 
+  geom_histogram() + 
+  scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50)) + 
+  facet_grid(gender~.)
+```
+
+***
+
+### Omitting NA Values
+missing values take on the value of NA
+
+```{r Omitting NA Values}
+dim(pf)
+dim(na.omit(pf))
+
+ggplot(aes(x = friend_count), data = subset(pf, !is.na(gender))) + 
+  geom_histogram(binwidth = 1) + 
+  scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 200)) + 
+  facet_wrap(~gender)
+
+##remove any observations that have na in them, not necessarily just for gender variable
+ggplot(aes(x = friend_count), data = na.omit((pf))) + 
+  geom_histogram(binwidth = 1) + 
+  scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 200)) + 
+  facet_wrap(~gender)
+
+```
+
+***
+
+### Statistics 'by' Gender
+Considering the plots above, it's hard to determine which gender has more friend on average. Who has more friends, male or females.
+
+To look at the average friend count by gender, we need *by* command
+```{r Statistics \'by\' Gender}
+table(pf$gender)
+
+#1 a numeric variable
+#2 a categorical variable, or the variable that contains our segment of users
+#3 a function--wanna a summary of the friend count by gender
+by(pf$friend_count,pf$gender,summary)
+```
+
+#### What's the difference between the median friend count for women and men?
+Response:
+Mean for friend count is higher than median.
+This should make sense since our data is long-tailed.
+The higher values of frient_count will pull our mean to the right. 
+
+
+In this case, the meadian is a more robust statistic. A few people drag the mean upwards which isn't necessarily representative of most users. What's nice is the median is resistant to change, so it's a reliable location of the center. 
+
+### Tenure
++(continuous position scales)[http://docs.ggplot2.org/current/scale_continuous.html]
++(theme set)[http://docs.ggplot2.org/0.9.2.1/theme.html]
++ The parameter color determines the color outline of objects in a plot. 
++ The parameter fill determines the color of the area inside objects in a plot. 
+
+You might notice how the color black and the (hex code)[https://en.wikipedia.org/wiki/Web_colors] color of #099DD9 (a shade of blue) are wrapped inside of I(). 
+
++ The I() functions stand for 'as is' and tells qplot to use them as colors. 
+
+```{r Tenure}
+qplot(x=tenure,data=pf,
+      color=I('black'),fill=I('#099DD9'),
+      xlab='Number of years using facebook',
+      ylab='Number of users in sample')
+#histogram of tenure measured by days
+#30 days is a month, so make the binwidth=30
+ggplot(aes(x=tenure),data=pf)+
+  geom_histogram(binwidth=30,color='blue', fill = '#099DD9')
+
+#histogram of tenure measured by years
+#limit our data, so that we can only see data from one to seven years
+ggplot(aes(x = tenure/365), data = pf) + 
+   geom_histogram(binwidth = .5, color = 'black', fill = 'grey')+
+  scale_x_continuous(breaks=(seq(0,8,0.5)),limits=c(0,7))
+```
+
+### Labeling Plots
+When you conduct EDA, your plots don't need to be perfect.
+Do focus on choices for scales and limits on each axis.
+Labels can function as comments about what the code intended to do.
+
+```{r Labeling Plots}
+ggplot(aes(x = tenure/365), data = pf) + 
+  xlab('Number of years using facebook')+
+  ylab('Number of users in sample')+
+  geom_histogram(binwidth = .5, color = 'black', fill = 'grey')+
+  scale_x_continuous(breaks=(seq(0,8,0.5)),limits=c(0,7))+
+  scale_y_continuous(breaks=(seq(0,30000,2500)))
+```
+
+***
+
+### User Ages
+Notes:
+
+```{r User Ages}
+summary(pf$age)
+ggplot(aes(x=age),data=subset(pf,!is.na(age)))+
+  geom_histogram(binwidth = 5,color='black',fill='pink')+
+  scale_x_continuous(breaks=seq(0,113,5),limits=c(0,120))+
+  scale_y_continuous(breaks=seq(0,60000,5000))+
+  xlab('User Age')+
+  ylab('Numbers of users with the specific age')
+
+```
+### Transforming Data
+
++ Most of our variables, such as friend_coumnt, likes are variables that I would call *engagement variables*, and they all have very long tails. Some users have 10 times, or even 100, the median value.     
+In statistics, we say that the data is *over dispersed*. Often, we will transform these values so we can see standard deviations, or orders of magnitudes so as to shortening the tail.
+"Over-dispersed" is always relative to some particular posited distribution. For example, data might be over-dispersed compared with a Poisson distribution with that mean. 
++ We can transform these variables by *taking the log*, either using the natural log, the log base 2 or log base 10. We can also use square root to help us see patterns more clearly, without being distracted by long tails.
++ A lot of statistical techniques like linear regression are based on assumption that variables have normal distributions. So by taking the log of variable, we can transform our data into something resembles a normal distribution.
++(normal distribution)[https://en.wikipedia.org/wiki/Normal_distribution]
++(multiple plots in one graph using gridExtra)[http://lightonphiri.org/blog/ggplot2-multiple-plots-in-one-graph-using-gridextra]
++(Log Transformations for Skewed and Wide Distributions)[https://www.r-statistics.com/2013/05/log-transformations-for-skewed-and-wide-distributions-from-practical-data-science-with-r/]
++(scale continuous)[http://docs.ggplot2.org/current/scale_continuous.html]
+```{r}
+
+```
+
+***
+```{r}
+summary(pf$friend_count)
+summary(log10(pf$friend_count+1))
+summary(sqrt(pf$friend_count))
+#	Install gridExtra
+#install.packages("gridExtra")
+library(gridExtra)
+#define individual plots
+p1<-ggplot(aes(friend_count),data=subset(pf,!is.na(friend_count)))+
+  geom_histogram(binwidth = 1)
+
+p2<-qplot(x=log10(friend_count+1),data=pf,binwidth=0.01)
+
+p3<-ggplot(aes(friend_count),data=subset(pf,!is.na(friend_count)))+
+  geom_histogram(binwidth=1)+
+  scale_x_sqrt()
+#arrange plots in grid
+grid.arrange(p1,p2,p3,ncol=1)
+```
+
+### Add a Scaling Layer
+the difference is in the x axis labeling   
+
++ Using scale_x_log10 will label the axis in actual friend_counts.
++ Whereas using the log 10 wrapper will label the x axis in log units.
+
+```{r Add a Scaling Layer}
+logScale<-ggplot(aes(x=log10(friend_count)),data=pf)+
+  geom_histogram(binwidth = 0.02)
+  
+countScale<-ggplot(aes(x=friend_count),data=pf)+
+  geom_histogram(binwidth = 0.02)+
+  scale_x_log10()
+
+grid.arrange(logScale,countScale,ncol=2)
+```
+

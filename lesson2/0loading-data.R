@@ -4,6 +4,7 @@
 #
 #####
 
+# http://flowingdata.com/2015/02/18/loading-data-and-basic-formatting-in-r/
 
 # Prelim: Export from Excel, Google Spreadsheets, download as CSV, etc.
 

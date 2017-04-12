@@ -1,0 +1,88 @@
+## Box Plots
+
+
+Basically, it gives you a good overview of the data¡¯s distribution.   
+
+
+The interquartile range is often used to find outliers in data. Outliers here are defined as observations that fall below Q1 ??? 1.5 IQR or above Q3 + 1.5 IQR. In a boxplot, the highest and lowest occurring value within this limit are indicated by whiskers of the box (frequently with an additional bar at the end of the whisker) and any outliers as individual points.
+
++ [How to read and use a Boxplot](http://flowingdata.com/2008/02/15/how-to-read-and-use-a-box-and-whisker-plot/)
++ [interquartile range or IQR](https://en.wikipedia.org/wiki/Interquartile_range)
++ [Visualization of the IQR with a normal probability distribution function with ¦Ì=1 and ¦Ò=1 ](https://en.wikipedia.org/wiki/File:Boxplot_vs_PDF.svg)
+
+```{r}
+##initialize
+getwd()
+setwd('F:/learn_data/R/Data-Analysis-with-R_udacity/lesson3')
+
+pf<-read.csv('pseudo_facebook.tsv',sep='\t')
+
+library(ggplot2)
+library(gridExtra)
+```
+# histogram
+```{r}
+qplot(x=friend_count,
+      data=subset(pf,!is.na(gender)),
+      binwidth=20)+
+  scale_x_continuous(limits=c(0,1000),breaks=seq(0,1000,50))+
+  facet_wrap(~gender)
+```
+
+## Box Plots
+
+ +y<-*continuous variable*
+ +x<-*categorical variable*
+ 
+These boxes are hard to see as We have so many outliers. 
+Each of these tiny little dot is an outlier in our data.
+Outliers is those who are outside the range of one and half times the IQR from the media.
+```{r}
+by(pf$friend_count,pf$gender,summary)
+```
+```{r}
+#1
+p1<-qplot(x=gender,y=friend_count,
+      data=subset(pf,!is.na(gender))
+      ,geom='boxplot')
+#2--remove data points outside the lim
+#So we will get a diffetent quartile within whole data
+p2<-qplot(x=gender,y=friend_count,
+      data=subset(pf,!is.na(gender)),
+      geom='boxplot')+
+  scale_y_continuous(limits=c(0,250))
+#3--remove data points outside the lim
+p3<-qplot(x=gender,y=friend_count,
+      data=subset(pf,!is.na(gender)&friend_count<1000)
+      ,geom='boxplot',
+      ylim=c(0,250)
+      )
+#4--zoom
+p4<-qplot(x=gender,y=friend_count,
+      data=subset(pf,!is.na(gender)),
+      geom='boxplot')+
+  coord_cartesian(ylim=c(0,250))+
+  ylab('zoom friend_count')
+
+grid.arrange(p1,p2,p3,p4,ncol=2)
+```
+```{r}
+ggplot(data=subset(pf,!is.na(gender)),
+       aes(x=gender,y=friend_count))+
+  geom_boxplot()+
+  coord_cartesian(ylim=c(0,800))
+```
+### Who made more friend requests on average - men or women?
+```{r}
+names(pf)
+by(pf$friendships_initiated,pf$gender,summary)
+
+ggplot(data=subset(pf,!is.na(gender)),
+       aes(x=gender,y=friendships_initiated))+
+  geom_boxplot(outlier.colour = 'blue')+
+  coord_cartesian(ylim=c(0,150))+
+ scale_y_continuous(breaks = seq(0,150,10))
+#It seems that female makes more friend requests
+  
+```
+

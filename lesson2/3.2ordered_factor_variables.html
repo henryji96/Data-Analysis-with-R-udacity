@@ -130,25 +130,25 @@ $(document).ready(function () {
 <ul>
 <li>The only required argument is a vector of values which can be either string or numeric.</li>
 <li>The levels argument, which determines the categories of the factor variable, and the default is the sorted list of all the distinct values of the data vector.</li>
-<li>he labels argument, which is a vector of values that will be the labels of the categories in the levels argument.</li>
+<li>The labels argument, which is a vector of values that will be the labels of the categories in the levels argument.</li>
 </ul>
+<p>The problem is that the levels are ordered according to the alphabetical order of the categories of ses. Thus, “high” is the lowest level of ses.f.bad.order, “middle” is the middle level and “low” is the highest level. In order to fix the ordering we need to use the levels argument to indicate the correct ordering of the categories. Let’s create a new factor variable called ses.f with the correct order of categories.</p>
 <pre class="r"><code>#generate numeric vector
 state&lt;-sample(0:1 ,20,replace=TRUE)
 state</code></pre>
-<pre><code>##  [1] 0 0 1 1 1 1 0 0 0 0 1 0 0 0 0 1 0 0 1 0</code></pre>
+<pre><code>##  [1] 0 1 0 1 0 1 1 0 1 1 1 1 0 0 1 0 1 1 1 0</code></pre>
 <pre class="r"><code>is.factor(state)</code></pre>
 <pre><code>## [1] FALSE</code></pre>
 <pre class="r"><code>is.numeric(state)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>#generate factor variable
 state.f&lt;-factor(state,labels=c(&quot;private&quot;,&quot;public&quot;))
-state.f</code></pre>
-<pre><code>##  [1] private private public  public  public  public  private private
-##  [9] private private public  private private private private public 
-## [17] private private public  private
-## Levels: private public</code></pre>
-<pre class="r"><code>is.factor(state.f)</code></pre>
-<pre><code>## [1] TRUE</code></pre>
+levels(state.f)</code></pre>
+<pre><code>## [1] &quot;private&quot; &quot;public&quot;</code></pre>
+<pre class="r"><code>table(state.f)</code></pre>
+<pre><code>## state.f
+## private  public 
+##       8      12</code></pre>
 <pre class="r"><code>#generate a character vector
 status.rank &lt;- c(&quot;low&quot;, &quot;middle&quot;, &quot;low&quot;, &quot;low&quot;, &quot;low&quot;, &quot;low&quot;, &quot;middle&quot;,&quot;low&quot;, &quot;middle&quot;,&quot;middle&quot;, &quot;middle&quot;, &quot;middle&quot;, &quot;middle&quot;,  &quot;high&quot;, &quot;high&quot;, &quot;low&quot;, &quot;middle&quot;,&quot;middle&quot;, &quot;low&quot;, &quot;high&quot;)
 is.character((status.rank))</code></pre>
@@ -164,8 +164,15 @@ status.rank.f</code></pre>
 </div>
 <div id="creating-ordered-factor-variables" class="section level1">
 <h1>2. Creating ordered factor variables</h1>
-<pre class="r"><code>status.rank.o&lt;-ordered(status.rank,levels=c(&quot;low&quot;,&quot;middle&quot;,&quot;high&quot;))
+<pre class="r"><code>#method1
+status.rank.o&lt;-ordered(status.rank,levels=c(&quot;low&quot;,&quot;middle&quot;,&quot;high&quot;))
+#method2
+status.rank.fo&lt;-factor(status.rank,levels=c(&quot;low&quot;,&quot;middle&quot;,&quot;high&quot;),ordered=TRUE)
 status.rank.o</code></pre>
+<pre><code>##  [1] low    middle low    low    low    low    middle low    middle middle
+## [11] middle middle middle high   high   low    middle middle low    high  
+## Levels: low &lt; middle &lt; high</code></pre>
+<pre class="r"><code>status.rank.fo</code></pre>
 <pre><code>##  [1] low    middle low    low    low    low    middle low    middle middle
 ## [11] middle middle middle high   high   low    middle middle low    high  
 ## Levels: low &lt; middle &lt; high</code></pre>
@@ -196,7 +203,7 @@ status.rank.f</code></pre>
 <pre class="r"><code>table(state.f)</code></pre>
 <pre><code>## state.f
 ## private  public 
-##      13       7</code></pre>
+##       8      12</code></pre>
 <pre class="r"><code>table(status.rank.f)</code></pre>
 <pre><code>## status.rank.f
 ##    low middle   high 
@@ -204,8 +211,8 @@ status.rank.f</code></pre>
 <pre class="r"><code>table(state.f,status.rank.f)</code></pre>
 <pre><code>##          status.rank.f
 ## state.f   low middle high
-##   private   2      8    3
-##   public    6      1    0</code></pre>
+##   private   5      1    2
+##   public    3      8    1</code></pre>
 </div>
 
 

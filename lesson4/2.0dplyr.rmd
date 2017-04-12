@@ -4,36 +4,64 @@ http://rstudio-pubs-static.s3.amazonaws.com/11068_8bc42d6df61341b2bed45e9a9a3bf9
 ### Conditional Means
 Sometimes you want to understand how the mean or median of a variable varies with another variable. It can be helpful to summarize the relationship between two variable in other ways rather than just plotting every single point.
 
++ For each age, it gives us the mean and median for income.
 + We can ask how does the average friend count vary over age.
 + dplyr lets up split up a dataframe and apply a function to some parts of the data
 + common functions: filter,groupby,mutate,arrange
 ```{r Conditional Means}
+library(dplyr)
+library(ggplot2)
+pf<-read.csv('pseudo_facebook.tsv',sep='\t')
+##group my dataframe by age
+age_groups<-group_by(pf,age)
+pf.fc_by_age1<-summarise(age_groups,
+          friend_count_mean=mean(friend_count),
+          friend_count_median=median(as.numeric(friend_count)),
+          friend_count_IQR=IQR(friend_count),
+          n=n() #number of users in each group
+          )
+head(pf.fc_by_age1)
+
+##chain functions onto our dataset, perform one function after another
+##same as above
+pf.fc_by_age2<-pf %>%
+  group_by(age) %>%
+  summarise(friend_count_mean=mean(friend_count),
+          friend_count_median=median(as.numeric(friend_count)),
+          n=n()) %>%
+  arrange(desc(age))
+head(pf.fc_by_age2)
 
 ```
-
-Create your plot!
-
-```{r Conditional Means Plot}
-
+## geom line
+http://ggplot2.tidyverse.org/reference/geom_path.html
+```{r Conditional means plot}
+ggplot(data=pf.fc_by_age1,
+       aes(age,friend_count_mean))+
+  geom_jitter(alpha=0.95,color='pink',
+              aes(size=friend_count_mean),
+              shape=1)
+ggplot(data=pf.fc_by_age1,
+       aes(age,friend_count_mean))+
+  geom_line()
 ```
-
-***
-
-### Overlaying Summaries with Raw Data
-Notes:
-
-```{r Overlaying Summaries with Raw Data}
-
+## Overlaying Summaries with Raw Data
+[Percentile tutorial](http://www.r-tutor.com/elementary-statistics/numerical-measures/percentile)
+```{r}
+ggplot(data=pf,
+       aes(x=age,y=friend_count))+
+  xlim(13,90)+
+  geom_point(alpha=0.05,
+              position=position_jitter(h=0),
+              color='orange')+
+  coord_trans(y='sqrt')+
+  coord_cartesian(xlim=c(13,70),ylim=c(0,1000))+##zoom
+  geom_line(stat='summary',fun.y=mean)+
+  geom_line(stat='summary',
+            fun.y=quantile,fun.args=list(probs =0.1),
+            linetype=2,color='blue')+
+  geom_line(stat='summary',
+            fun.y=quantile,fun.args=list(probs =0.9),
+            linetype=2,color='blue')
+#summary line are the mean friend count by age over my raw data
 ```
-
-#### What are some of your observations of the plot?
-Response:
-
-***
-
-### Moira: Histogram Summary and Scatterplot
-See the Instructor Notes of this video to download Moira's paper on perceived audience size and to see the final plot.
-
-Notes:
-
-***

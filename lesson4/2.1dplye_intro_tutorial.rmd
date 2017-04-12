@@ -1,0 +1,115 @@
+http://rstudio-pubs-static.s3.amazonaws.com/11068_8bc42d6df61341b2bed45e9a9a3bf9f4.html
+```{r}
+#install.packages('dplyr',dependencies = TRUE)
+```
+```{r}
+library(dplyr)
+library(ggplot2)
+```
+```{r}
+pf<-read.delim('pseudo_facebook.tsv')
+str(pf)
+
+```
+## Basic verbs
+dplyr provides five basic data manipulation verbs that work on a single table: filter(), arrange(), select(), mutate() and summarise().
+
+### Filter rows with filter()
+
++ filter() allows you to select a subset of the rows of a data frame. The first argument is the name of the data frame, and the second and subsequent are filtering expressions evaluated in the context of that data frame
++ filter() works similarly to *subset()* except that you can give it any number of filtering conditions which are joined together with & 
++ This is equivalent to the more verbose: pf[pf$age=='male']
+```{r}
+pf_f<-filter(pf,gender=='male',age>21,age<23,dob_month==1)
+head(pf_f)
+```
+## Arrange rows with arrange()
++ arrange() works similarly to filter() except that instead of = filtering or selecting rows, it reorders them.   
++ It takes a data frame, and a set of column names (or more complicated expressions) to order by. Use *desc()* to order a order in descending order:  
++ dplyr::arrange() works the same way as plyr::arrange(). It's a straighforward wrapper around order() that requires less typing. The previous code is equivalent to:    
+hflights[order(hflights$DayofMonth, hflights$Month, hflights$Year), ]
+```{r}
+pf_a<-arrange(pf,age,dob_year,desc(tenure))
+head(pf_a)
+```
+## Select columns with select()
+
++ This function works similarly to the select argument to the base::subset(). It's its own function in dplyr, because the dplyr philosophy is to have small functions that each do one thing well.
++ Often you work with large datasets with many columns where only a few are actually of interest to you. select() allows you to rapidly zoom in on a useful subset using operations that usually only work on numeric variable positions
+```{r}
+# Select columns by name
+s1<-select(pf,age,dob_year)
+head(s1)
+# Select all columns between Year and DayOfWeek (inclusive)
+s2<-select(pf, age:dob_year)
+head(s2)
+# Select all columns except Year and DayOfWeek
+s3<-select(pf, -(age:dob_year))
+head(s3)
+```
+## Add new columns with mutate()
+
++ As well as selecting from the set of existing columns, it's often useful to add new columns that are functions of existing columns. This is the job of mutate():
++ dplyr::mutate() works the same way as plyr::mutate() and similarly to base::transform(). The key difference between mutate() and transform() is that mutate allows you to refer to columns that you just created:
+```{r}
+pf_m<-mutate(pf,
+       friend_received=friend_count-friendships_initiated,
+       tenure_y=tenure/365
+       )
+head(pf_m,8)
+
+```
+## Summarise values with summarise()
+The last verb is summarise(), which collapse a data frame to a single row.
+```{r}
+summarise(pf,
+          tenure_med=median(tenure,na.rm = TRUE),
+          age_avg=mean(age,na.rm = TRUE)
+          )
+
+```
+
+## Commonalities
+You may have noticed that all these functions are very similar:
+
++ The first argument is a data frame.
++ The subsequent arguments describe what to do with it, and you can refer to columns in the data frame directly without using $.
++ The result is a new data frame
+Together these properties make it easy to chain together multiple simple steps to achieve a complex result.
+
+# Grouped operations
+These verbs are useful, but they become really powerful when you combine them with the idea of ¡°group by¡±, repeating the operation individually on each group. 
++ In dplyr, you use the **group_by()** function to describe how to break a dataset down into groups. You can then use the resulting object in the exactly the same functions as above.
++ Of the five verbs, *arrange() and select()* are unaffected by grouping. 
++ Group-wise *mutate() and arrange()* are most useful in conjunction with window functions, and are described in detail in the corresponding vignette(). 
++ *summarise()* is easy to understand any very useful, and is described in more detail below.
++ You use summarise() with aggregate functions, which take a vector of values, and return a single number. There are many useful functions in base R like *min(), max(), mean(), sum(), sd(), median(), and IQR()*. 
+```{r}
+#str(pf)
+pf_f<-filter(pf,!is.na(gender),!is.na(tenure))
+names(pf_f)
+##first groupby,second summarise
+age_groups<-group_by(pf_f,age)
+pf_by_age<-summarise(age_groups,
+          count=n(),
+          tenure_avg=mean(tenure),
+          tenure_IQR=IQR(tenure)
+          )
+
+pf_by_age
+##same result
+by(pf_f$tenure,pf_f$gender,mean)
+
+ggplot(data=pf_by_age,
+       aes(x=age,y=tenure_avg))+
+  geom_point(aes(size=tenure_avg),alpha=1/5)+
+  geom_smooth()
+```
+```{r}
+dob_day_groups<-group_by(pf,dob_year,dob_day,dob_month)
+pf_by_dob<-summarise(dob_day_groups,
+                     age_avg=mean(age),
+                     tenure_avg=mean(tenure))
+pf_by_dob
+```
+

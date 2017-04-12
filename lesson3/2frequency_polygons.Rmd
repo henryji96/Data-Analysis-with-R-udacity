@@ -1,0 +1,60 @@
+## Frequency Polygons
+
++ They are similar to histograms, but they draw a curve connecting the counts in a histogram.  
++ It allows us to see the shape and the peaks of our distribution in more detail.
++ Note that the shape of the frequency polygon depends on how our *bins* are set up - the height of the lines are the same as the bars in individual histograms, but the lines are easier to make a comparison with since they are on the same axis.
++ Note that *sum(..count..)* will sum across color, so the percentages displayed are percentages of total users. To plot percentages within each group, you can try *y = ..density...*
+```{r}
+getwd()
+setwd('F:/learn_data/R/Data-Analysis-with-R_udacity/lesson3')
+
+pf<-read.csv('pseudo_facebook.tsv',sep='\t')
+library(gridExtra)
+library(ggplot2)
+names(pf)
+#histogram
+p1<-ggplot(data=subset(pf,is.na(gender)),
+           aes(x=friend_count))+
+  geom_histogram(binwidth=10)
+#frequency polygon
+p2<-ggplot(data = subset(pf,!is.na(gender)),
+           aes(x=friend_count))+
+  geom_freqpoly(aes(color = gender), binwidth=10) + 
+  scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50)) + 
+  xlab('Friend Count') + 
+  ylab('Number of users with that friend count')
+
+#show the proportions instead of raw counts, so we will pass in y
+#percentages of total users
+p3<-ggplot(data = subset(pf,!is.na(gender)),
+           aes(x=friend_count,y=..count../sum(..count..)))+
+  geom_freqpoly(aes(color = gender), binwidth=10) + 
+  scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50)) + 
+  xlab('Friend Count-binwidth=10') + 
+  ylab('Proportion of users with that friend count')
+#plot percentages within each group
+p4<-ggplot(data = subset(pf,!is.na(gender)),
+           aes(x=friend_count,y=..density..))+
+  geom_freqpoly(aes(color = gender), binwidth=50) + 
+  scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50)) + 
+  xlab('Friend Count-binwidth=50') + 
+  ylab('Proportion of users with that friend count')
+
+p1
+p2
+p3
+p4
+grid.arrange(p1,p2,p3,p4,ncol=1)
+```
+```{r}
+names(pf)
+by(pf$www_likes,pf$gender,summary)
+by(pf$www_likes,pf$gender,sum)
+
+
+ggplot(data=subset(pf,!is.na(gender)),
+       aes(x=www_likes))+
+  geom_freqpoly(aes(color=gender),binwidth=1)+
+  scale_x_log10()
+```
+
