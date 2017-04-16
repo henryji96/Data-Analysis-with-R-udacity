@@ -24,7 +24,7 @@ length(date)
 ### geom_line() is suitable for time series
 ```{r}
 p1<-ggplot(economics,aes(date,unemploy))+
-  geom_line()
+  geom_line(linetype=4)
 p2<-ggplot(economics_long,
        aes(x=date,y=value01,
            color=variable))+
