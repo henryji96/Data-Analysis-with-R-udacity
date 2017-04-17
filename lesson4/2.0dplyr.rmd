@@ -33,6 +33,10 @@ pf.fc_by_age2<-pf %>%
 head(pf.fc_by_age2)
 
 ```
+```{r}
+
+```
+
 ## geom line
 http://ggplot2.tidyverse.org/reference/geom_path.html
 ```{r Conditional means plot}
