@@ -54,6 +54,7 @@ p3
 # Also works with discrete scales
 ```{r}
 df <- data.frame(a = abs(rnorm(26)),letters)
+df
 ggplot(data=df,
        aes(a,letters))+
   geom_point()+

@@ -33,39 +33,23 @@ pf.fc_by_age2<-pf %>%
 head(pf.fc_by_age2)
 
 ```
-```{r}
-
-```
 
 ## geom line
 http://ggplot2.tidyverse.org/reference/geom_path.html
 ```{r Conditional means plot}
 ggplot(data=pf.fc_by_age1,
        aes(age,friend_count_mean))+
-  geom_jitter(alpha=0.95,color='pink',
-              aes(size=friend_count_mean),
-              shape=1)
+  geom_jitter(alpha=0.95,
+              aes(size=age,
+                  color=age),
+              shape=2)
+
 ggplot(data=pf.fc_by_age1,
        aes(age,friend_count_mean))+
   geom_line()
+
+ggplot(data=pf.fc_by_age1,
+       aes(age,friend_count_mean))+
+  geom_step()
 ```
-## Overlaying Summaries with Raw Data
-[Percentile tutorial](http://www.r-tutor.com/elementary-statistics/numerical-measures/percentile)
-```{r}
-ggplot(data=pf,
-       aes(x=age,y=friend_count))+
-  xlim(13,90)+
-  geom_point(alpha=0.05,
-              position=position_jitter(h=0),
-              color='orange')+
-  coord_trans(y='sqrt')+
-  coord_cartesian(xlim=c(13,70),ylim=c(0,1000))+##zoom
-  geom_line(stat='summary',fun.y=mean)+
-  geom_line(stat='summary',
-            fun.y=quantile,fun.args=list(probs =0.1),
-            linetype=2,color='blue')+
-  geom_line(stat='summary',
-            fun.y=quantile,fun.args=list(probs =0.9),
-            linetype=2,color='blue')
-#summary line are the mean friend count by age over my raw data
-```
+
