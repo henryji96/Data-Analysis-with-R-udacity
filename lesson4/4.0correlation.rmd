@@ -253,32 +253,4 @@ p3<-ggplot(data=filter(pf.fc_by_age,age<70),
 grid.arrange(p1,p2,p3)
 ```
 
-Programming Assignment
-```{r Programming Assignment}
-
-```
-
-***
-
-### Noise in Conditional Means
-
-```{r Noise in Conditional Means}
-
-```
-
-***
-
-### Smoothing Conditional Means
-Notes:
-
-```{r Smoothing Conditional Means}
-
-```
-
-***
-
-### Which Plot to Choose?
-Notes:
-
-***
 
