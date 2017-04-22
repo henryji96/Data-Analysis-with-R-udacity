@@ -1,0 +1,60 @@
+http://seananderson.ca/2013/10/19/reshape.html
+# The reshape2 package
+reshape2 is based around two key functions: melt and cast:
+
++ melt takes wide-format data and melts it into long-format data.
++ cast takes long-format data and casts it into wide-format data.
+Think of working with metal: if you melt metal, it drips and becomes long. If you cast it into a mould, it becomes wide.
+# Long and wide format data
++ *Long-format* data has a column for possible variable types and a column for the values of those variables. Long-format data isn’t necessarily only two columns. For example, we might have ozone measurements for each day of the year. In that case, we could have another column for day. In other words, there are different levels of “longness”. The ultimate shape you want to get your data into will depend on what you are doing with it.
++ In reality, you need long-format data much more commonly than wide-format data. For example, ggplot2 requires long-format data (technically tidy data), plyr requires long-format data, and most modelling functions (such as lm(), glm(), and gam()) require long-format data. 
++ But people often find it easier to record their data in *wide format*.
+```{r}
+library(ggplot2)
+library(reshape2)
+names(airquality)<-tolower(names(airquality))
+head(airquality)
+```
+# Wide-to-long format data: the melt function
+By default, melt has assumed that all columns with numeric values are variables with values. Often this is what you want. Maybe here we want to know the values of ozone, solar.r, wind, and temp for each month and day. We can do that with melt by telling it that we want month and day to be *“ID variables”*. ID variables are the variables that identify individual rows of data.
+```{r}
+#id var
+#control the column names in our long-format data
+aql<-melt(airquality,
+          id.vars = c('month','day'),
+          variable.name = 'climate_variable',
+          value.name = 'climate_value')
+aql
+```
+
+# Long- to wide-format data: the cast functions
+In reshape2 there are multiple cast functions. Since you will most commonly work with data.frame objects, we’ll explore the dcast function. (There is also acast to return a vector, matrix, or array.)
+
+
+Here, we need to tell dcast that month and day are the ID variables (we want a column for each) and that variable describes the measured variables.   
+Since there is only one remaining column, dcast will figure out that it contains the values themselves. We could explicitly declare this with value.var. (And in some cases it will be necessary to do so.)
+```{r}
+aqw <- dcast(aql, 
+             month + day~climate_variable,
+             value.var = 'climate_value')
+head(aqw)
+```
+One confusing “mistake” you might make is casting a dataset in which there is *more than one value per data cell*. For example, this time we won’t include day as an ID variable:
+```{r}
+#If you look at the output, the cells are filled with the number of data rows for each month-climate combination. The numbers we’re seeing are the number of days recorded in each month. 
+# Aggregation function missing: defaulting to length
+#When you cast your data and there are multiple values per cell, you also need to tell dcast how to aggregate the data. For example, maybe you want to take the mean, or the median, or the sum.
+dcast(aql,
+      month~climate_variable,
+      value.var = 'climate_value',
+      fun.aggregate = mean,
+      na.rm=TRUE)
+
+```
+
+
+
+
+
+
+

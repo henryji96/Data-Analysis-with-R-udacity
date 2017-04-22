@@ -1,0 +1,36 @@
+
+### Heat Maps
+```{r}
+nci <- read.table("nci.tsv")
+colnames(nci) <- c(1:64)
+
+```
+```{r}
+names(nci)
+str(nci)
+head(nci)
+summary(nci)
+```
+```{r}
+?ggplot
+```
+Display each combination of gene and sample case.
+For our data set we want to display each combination of gene and sample case, the difference in gene expression and the sample from
+the base line. 
+We want to display combinations where a gene is over expressed in red. in combinations where it is under expressed in blue. 
+```{r}
+library(ggplot2)
+library(reshape2)
+#When melt matrix, the new dataframe turned into 3 columns.
+# row column value.
+nci.long.samp <- melt(as.matrix(nci[1:200,]))
+dim(nci.long.samp)
+names(nci.long.samp) <- c("gene", "case", "value")
+head(nci.long.samp)
+
+ggplot(aes(y = gene, x = case, fill = value),
+  data = nci.long.samp) +
+  geom_tile() +
+  scale_fill_gradientn(colours = colorRampPalette(c("blue", "red"))(100))
+#this last line is going to give us a scale gradient. And we're going to use the colors from blue to red
+```

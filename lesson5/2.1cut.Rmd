@@ -1,0 +1,50 @@
+https://www.r-bloggers.com/r-function-of-the-day-cut-2/
+```{r}
+library(dplyr)
+```
+
+## What situation is cut useful in?
+In many data analysis settings, it might be useful to break up a continuous variable such as age into a categorical variable. Or, you might want to classify a categorical variable like year into a larger bin, such as 1990-2000. There are many reasons not to do this when performing regression analysis, but for simple displays of demographic data in tables, it could make sense. The cut function in R makes this task simple!
+## How do I use cut?
+First, we will simulate some data from a hypothetical clinical trial that includes variables for patient ID, age, and year of enrollment.
+```{r}
+## generate data for clinical trial example
+clinical.trial <-data.frame(patient = 1:100,              age = rnorm(100, mean = 60, sd = 8),
+      year.enroll = sample(paste("19", 85:99, 
+                                 sep = ""),   100,                             replace = TRUE))
+summary(clinical.trial)
+head(clinical.trial)
+table(clinical.trial$year.enroll)
+```
+Now, we will use the cut function to make age a factor, which is what R calls a categorical variable.   
+Our first example calls cut with the breaks argument set to a single number. This method will cause cut to break up age into 4 intervals. The default labels use standard mathematical notation for open and closed intervals.
+```{r}
+## basic usage of cut with a numeric variable
+c1 <- cut(clinical.trial$age, breaks = 4)
+table(c1)
+```
+http://blog.csdn.net/jiluben/article/details/40222229
+```{r}
+#R语言中因子(factor)转换成数值型(numeric)的问题
+# 一共有n个数，那么转换后的数字就会在1——n中取值，数字最小的取一，次小的取二，以此类推。
+n_distinct(clinical.trial$year.enroll)
+as.numeric(clinical.trial$year.enroll)
+
+ ## year.enroll is a factor, so must convert to numeric first!
+c2 <- cut(as.numeric(as.character(clinical.trial$year.enroll)),breaks = 3)
+table(c2)
+
+```
+
+Well, the intervals that cut chose by default are not the nicest looking with the age example, although they are fine with the year example, since it was already discrete. Luckily, we can specify the exact intervals we want for age. Our next example shows how.
+```{r}
+## specify break points explicitly using seq function
+## look what seq does  
+seq(30, 80, by = 10)
+## cut the age variable using the seq defined above
+c1 <- cut(clinical.trial$age, breaks = seq(30, 80, by = 10))
+## table of the resulting factor           
+table(c1)
+c1
+```
+

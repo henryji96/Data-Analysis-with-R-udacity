@@ -1,0 +1,4 @@
+http://stackoverflow.com/questions/21810675/ggallyggpairs-plot-without-gridlines-when-plotting-correlation-coefficient
+https://tgmstat.wordpress.com/2013/11/13/plot-matrix-with-the-r-package-ggally/
+https://www.r-bloggers.com/plot-matrix-with-the-r-package-ggally/
+http://www.flutterbys.com.au/stats/tut/tut5.3.html

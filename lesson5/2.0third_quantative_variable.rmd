@@ -1,0 +1,116 @@
+### Third Quantitative Variable
+
+```{r Third Quantitative Variable}
+pf$year_joined<-floor(2014-pf$tenure/365)
+table(pf$year_joined)
+
+str(pf$year_joined)
+```
+
+***
+
+### Cut a Variable
+turn numeric variable into factor variable
+```{r Cut a Variable}
+pf$year_joined.bucket<-cut(pf$year_joined,
+                           c(2004,2009,2011,2012,2014))
+table(pf$year_joined.bucket,useNA = 'ifany')
+str(pf$year_joined.bucket)
+```
+
+***
+
+### Plotting it All Together
+As the numeric variable turned into factor variable, the method of plot is the same as chapter 1.0 
+```{r Plotting it All Together}
+
+ggplot(data=filter(pf,!is.na(year_joined.bucket)),
+       aes(x=age,
+           y=friend_count))+
+  geom_line(aes(color=year_joined.bucket),stat='summary',fun.y=median)
+  
+```
+it indicates that users with higher tenure tend to have higher friend counts, with the exception of our old friends.
+***
+
+### Plot the Grand Mean
+grand mean line reveals that much of data in the sample is about members of recent cohorts.
+```{r Plot the Grand Mean}
+ggplot(data=filter(pf,!is.na(year_joined.bucket)),
+       aes(x=age,
+           y=friend_count))+
+  geom_line(aes(color=year_joined.bucket),stat='summary',fun.y=mean)+
+  geom_line(stat='summary',fun.y=mean,linetype=4)
+
+
+```
+
+***
+
+### Friending Rate
+
+```{r Friending Rate}
+with(subset(pf,tenure>=1),summary(friend_count/tenure))
+
+ggplot(data=filter(pf,!is.na(pf$gender),tenure>1),
+       aes(x=gender,y=friend_count/tenure))+
+  geom_boxplot()+
+  coord_cartesian(ylim=c(0,4))
+```
+
+***
+
+### Friendships Initiated
+People with more tenure, typically initiate less friendships.   
+friendships_initiated----tenure
+```{r Friendships Initiated}
+ggplot(data=filter(pf,tenure>=1),
+       aes(x=tenure,y=friendships_initiated/tenure))+
+  geom_line(aes(color=year_joined.bucket),stat='summary',fun.y=mean)
+
+```
+
+***
+
+### Bias-Variance Tradeoff Revisited
+http://scott.fortmann-roe.com/docs/BiasVariance.html
+
+It's noisy, since wr are plotting the mean of y for every possible tenure x value   
+We will modify this by bending x axis differently.
+```{r Bias-Variance Tradeoff Revisited}
+
+ggplot(aes(x = tenure, 
+           y = friendships_initiated / tenure),
+       data = subset(pf, tenure >= 1)) +
+  geom_line(aes(color = year_joined.bucket),
+            stat = 'summary',
+            fun.y = mean)
+#The code changing the binning is substituting x = tenure in the plotting expressions with x = 7 * round(tenure / 7), etc., binning values by the denominator in the round function and then transforming back to the natural scale with the constant in front.
+#tenure n-distinct decrease, so after groupby and summary, the new dataset will have fewer data points.
+ggplot(aes(x = 7 * round(tenure / 7), y = friendships_initiated / tenure),
+       data = subset(pf, tenure > 0)) +
+  geom_line(aes(color = year_joined.bucket),
+            stat = "summary",
+            fun.y = mean)
+
+ggplot(aes(x = 30 * round(tenure / 30), y = friendships_initiated / tenure),
+       data = subset(pf, tenure > 0)) +
+  geom_line(aes(color = year_joined.bucket),
+            stat = "summary",
+            fun.y = mean)
+
+ggplot(aes(x = 90 * round(tenure / 90), y = friendships_initiated / tenure),
+       data = subset(pf, tenure > 0)) +
+  geom_line(aes(color = year_joined.bucket),
+            stat = "summary",
+            fun.y = mean)
+
+```
+```{r}
+ggplot(aes(x = tenure, 
+           y = friendships_initiated / tenure),
+       data = subset(pf, tenure >= 1))+
+  geom_smooth(aes(color=year_joined.bucket))
+#R will automatically choose the appropriate statistical methods based on our data.
+```
+

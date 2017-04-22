@@ -1,0 +1,15 @@
+http://www.statmethods.net/advgraphs/parameters.html
+## Graphical Parameters
+You can customize many features of your graphs (fonts, colors, axes, titles) through graphic options.
+
+One way is to specify these options in through the par( ) function. If you set parameter values here, the changes will be in effect for the rest of the session or until you change them again. The format is par(optionname=value, optionname=value, ...)
+```{r}
+par()
+cur_par<-par()
+par(col.lab='red')
+hist(mtcars$mpg)
+ggplot(mtcars,
+       aes(mpg))+
+  geom_histogram(binwidth=1)
+```
+

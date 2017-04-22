@@ -1,0 +1,23 @@
+### Many Variables
+Most recently, when analyzing the relationship between two variables we look to incorporate more variables in the analysis to improve it. For example, by seeing whether a particular relationship is consistent across values of those other variables. In choosing a third or fourth variable to plot we relied on our domain knowledge. 
+But often, we might want visualizations or summaries to help us identify such auxiliary variables. In some analyses, we may plan to make use of a large number of variables. Perhaps, we are planning on predicting one variable with ten, 20, or hundreds of others. Or maybe we want to summarize a large set of variables into a smaller set of dimensions. Or perhaps, we're looking for
+interesting relationships among a large set of variables.    
+In such cases, we can help speed up our exploratory data analysis by producing many plots or comparisons at once. This could be one way to let the data set as a whole speak in part by drawing our attention to variables we didn't have a preexisting interest in.
+***
+### Scatterplot Matrix
+We should let the data speak to determine variables of interest. There 's a tool that can let us create a number of scatter plots automatically. It's called a scatter plot matrix.   
+There's a grid of scatter plots between every pair of variables. As we've seen, scatter plots are great, but not necessarily suited for all types of variables. For example, categorical ones. So there are other types of visualizations that can be created instead of scatter plots. Like *box plots or histograms when the variables are categorical*. Let's produce the scatter plot matrix for our pseudo Facebook data set. 
+```{r}
+#install.packages('GGally')
+set.seed(1836)
+library(GGally)
+
+pf_sub<-pf[,c(2:15)]
+nrow(pf_sub)
+sample_user<-sample.int(nrow(pf_sub),1000)
+ggpairs(pf_sub[sample_user,])
+```
+
+
+
+
