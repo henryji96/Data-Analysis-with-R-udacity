@@ -1,19 +1,19 @@
 ## Box Plots
 
 
-Basically, it gives you a good overview of the data¡¯s distribution.   
+Basically, it gives you a good overview of the data??s distribution.   
 
 
 The interquartile range is often used to find outliers in data. Outliers here are defined as observations that fall below Q1 ??? 1.5 IQR or above Q3 + 1.5 IQR. In a boxplot, the highest and lowest occurring value within this limit are indicated by whiskers of the box (frequently with an additional bar at the end of the whisker) and any outliers as individual points.
 
 + [How to read and use a Boxplot](http://flowingdata.com/2008/02/15/how-to-read-and-use-a-box-and-whisker-plot/)
 + [interquartile range or IQR](https://en.wikipedia.org/wiki/Interquartile_range)
-+ [Visualization of the IQR with a normal probability distribution function with ¦Ì=1 and ¦Ò=1 ](https://en.wikipedia.org/wiki/File:Boxplot_vs_PDF.svg)
++ [Visualization of the IQR with a normal probability distribution function with ??=1 and ??=1 ](https://en.wikipedia.org/wiki/File:Boxplot_vs_PDF.svg)
 
 ```{r}
 ##initialize
 getwd()
-setwd('F:/learn_data/R/Data-Analysis-with-R_udacity/lesson3')
+setwd('/Users/henry/Desktop/data_science/Data_Analysis_with_R_udacity/lesson3')
 
 pf<-read.csv('pseudo_facebook.tsv',sep='\t')
 
@@ -26,7 +26,7 @@ qplot(x=friend_count,
       data=subset(pf,!is.na(gender)),
       binwidth=20)+
   scale_x_continuous(limits=c(0,1000),breaks=seq(0,1000,50))+
-  facet_wrap(~gender)
+  facet_grid(gender~.)
 ```
 
 ## Box Plots

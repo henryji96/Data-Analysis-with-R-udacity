@@ -6,7 +6,7 @@
 + Note that *sum(..count..)* will sum across color, so the percentages displayed are percentages of total users. To plot percentages within each group, you can try *y = ..density...*
 ```{r}
 getwd()
-setwd('F:/learn_data/R/Data-Analysis-with-R_udacity/lesson3')
+setwd('/Users/henry/Desktop/data_science/Data_Analysis_with_R_udacity/lesson3')
 
 pf<-read.csv('pseudo_facebook.tsv',sep='\t')
 library(gridExtra)
@@ -40,10 +40,7 @@ p4<-ggplot(data = subset(pf,!is.na(gender)),
   xlab('Friend Count-binwidth=50') + 
   ylab('Proportion of users with that friend count')
 
-p1
-p2
-p3
-p4
+
 grid.arrange(p1,p2,p3,p4,ncol=1)
 ```
 ```{r}

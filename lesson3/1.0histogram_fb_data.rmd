@@ -15,6 +15,7 @@ list.files()
 pf<-read.csv('pseudo_facebook.tsv',sep='\t')
 dim(pf)
 names(pf)
+head(pf,5)
 ```
 
 ***
@@ -160,7 +161,7 @@ You might notice how the color black and the (hex code)[https://en.wikipedia.org
 ```{r Tenure}
 qplot(x=tenure,data=pf,
       color=I('black'),fill=I('#099DD9'),
-      xlab='Number of years using facebook',
+      xlab='Number of days using facebook',
       ylab='Number of users in sample')
 #histogram of tenure measured by days
 #30 days is a month, so make the binwidth=30
@@ -191,10 +192,9 @@ ggplot(aes(x = tenure/365), data = pf) +
 ***
 
 ### User Ages
-Notes:
-
 ```{r User Ages}
 summary(pf$age)
+
 ggplot(aes(x=age),data=subset(pf,!is.na(age)))+
   geom_histogram(binwidth = 5,color='black',fill='pink')+
   scale_x_continuous(breaks=seq(0,113,5),limits=c(0,120))+
@@ -214,10 +214,6 @@ In statistics, we say that the data is *over dispersed*. Often, we will transfor
 +(multiple plots in one graph using gridExtra)[http://lightonphiri.org/blog/ggplot2-multiple-plots-in-one-graph-using-gridextra]
 +(Log Transformations for Skewed and Wide Distributions)[https://www.r-statistics.com/2013/05/log-transformations-for-skewed-and-wide-distributions-from-practical-data-science-with-r/]
 +(scale continuous)[http://docs.ggplot2.org/current/scale_continuous.html]
-```{r}
-
-```
-
 ***
 ```{r}
 summary(pf$friend_count)

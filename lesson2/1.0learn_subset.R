@@ -1,5 +1,5 @@
 getwd()
-setwd('F:/learn_data/R/Data-Analysis-with-R_udacity/lesson2')
+setwd('/Users/henry/Desktop/data_science/Data_Analysis_with_R_udacity/lesson2')
 
 statesInfo <- read.csv('stateData.csv')
 head(statesInfo,3)

@@ -1,7 +1,9 @@
 getwd()
+setwd('/Users/henry/Desktop/data_science/Data_Analysis_with_R_udacity/lesson2')
 reddit<-read.csv('reddit.csv')
 str(reddit)
 dim(reddit)
+head(reddit)
 #factor variables
 table(reddit$age.range)
 summary(reddit)

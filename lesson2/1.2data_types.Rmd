@@ -1,7 +1,7 @@
 ---
 title: "data_types"
 author: "Wenhan Ji"
-date: "2017Äê4ÔÂ3ÈÕ"
+date: "2017??4??3??"
 output: html_document
 ---
 
@@ -60,12 +60,12 @@ f<-c("blue","green","grey",NA)
 
 mydf<-data.frame(d,e,f)
 names(mydf)<-c("ID","Passes","Color") #variable names
-mydf
+row.names(mydf)<-c("a","b","c","d") #instance names
+
 mydf[1:2] #columns 1,2 of df
 mydf[c("ID","Color")]#ID and Color column
 mydf$ID      #variable ID in the dataframe
 
-row.names(mydf)<-c("a","b","c","d") #instance names
 mydf
 ```
 
@@ -84,9 +84,9 @@ list1
 ```
 ```{r}
 # example of a list containing two lists 
-list2<-  list(name="Henry", age=21)
+list2<-list(name="Henry", age=21)
 v<-c(list1,list2)
-v[1:7]
+v[1:8]
 ```
 ```{r}
 #Identify elements of a list using the [[]] convention
@@ -101,7 +101,7 @@ The factor stores the nominal values as a vector of integers in the range [ 1...
 # variable gender with 20 "male" entries and 
 # 30 "female" entries 
 c(rep("repeat", 3))
-gender <- c(rep("male",20), rep("female", 30),"Unknown") 
+gender <- c(rep("male",2), rep("female", 3),"Unknown") 
 gender <- factor(gender) 
 # stores gender as 20 1s and 30 2s and associates
 # 1=female, 2=male internally (alphabetically)
@@ -118,7 +118,7 @@ An ordered factor is used to represent an ordinal variable.
 # recodes rating to 1,3,5 and associates
 # 5=large, 3=medium, 1=small internally
 # R now treats rating as ordinal
-rating<-c(rep("large",10),rep("small",3),rep("medium",5))
+rating<-c(rep("large",3),rep("small",1),rep("medium",3))
 table(rating)
 
 
@@ -141,9 +141,13 @@ You can use options in the factor( ) and ordered( ) functions to control the map
 length(rating) # number of elements or components
 str(rating)    # structure of an object 
 class(rating)  # class or type of an object
+names(rating)
 
-ls()# list current objects
-#rm() # delete an object
+current_obj=ls()# list current objects
+str(current_obj)
+
+rm(list=ls()) # delete all object-global environment
+ls()
 ```
 
 

@@ -18,8 +18,8 @@ ggplot(aes(x = gender, y = age),
 #Everywhere the median friend_count is larger for women than it is for man
 #There are some noisy estimates for our old users.
 ggplot(data=subset(pf,!is.na(gender)),
-       aes(x=age,y=friend_count))+
-  geom_line(aes(color=gender),stat='summary',fun.y=median)
+       aes(x=age,y=friend_count,color=gender))+
+  geom_line(stat='summary',fun.y=median)
   
 ```
 ### Third Qualitative Variable--method2
