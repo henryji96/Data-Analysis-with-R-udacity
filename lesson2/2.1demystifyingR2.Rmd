@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 Demystifying R Part 2
 ========================================================
 
@@ -27,7 +32,8 @@ Subset the data so that you create a new data frame that contains
 cars that get 23 or more mpg (miles per gallon). Save it to a new data
 frame called efficient.
 ```{r}
-efficient<-subset(mtcars,mpg>=23)
+efficient<-subset(mtcars,mpg>=23 & vs==1)
+efficient
 ```
 
 3. How many cars get more than 23 mpg? Use one of the commands you
@@ -142,6 +148,7 @@ cond <- mtcars$wt < 3
 cond
 mtcars$weight_class <- ifelse(cond, 'light', 'average')
 mtcars$weight_class
+
 cond <- mtcars$wt > 3.5
 mtcars$weight_class <- ifelse(cond, 'heavy', mtcars$weight_class)
 mtcars$weight_class
@@ -154,8 +161,7 @@ nothing to worry about here, but let's delete those variables from the
 work space.
 
 ```{r}
-rm(cond)
-rm(efficient)
+rm(lt23)
 ```
 
 Save this file if you haven't done so yet.
@@ -167,7 +173,7 @@ need the knitr package to do that so let's install that now. **Uncomment** the
 following two lines of code and run them.
 
 ```{r}
- install.packages('knitr', dependencies = T)
+ install.packages('knitr', dependencies = T,repos="https://cran.rstudio.com")
  library(knitr)
 ```
 

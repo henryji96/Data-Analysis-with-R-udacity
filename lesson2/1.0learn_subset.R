@@ -1,5 +1,5 @@
 getwd()
-setwd('/Users/henry/Desktop/data_science/Data_Analysis_with_R_udacity/lesson2')
+setwd("/Users/henry/Desktop/Data Science/ud651_data_analysis_with_R/lesson2")
 
 statesInfo <- read.csv('stateData.csv')
 head(statesInfo,3)
@@ -18,6 +18,6 @@ dim(stateSubset)
 stateSubsetBracket<-statesInfo[statesInfo$state.region==1,]
 head(stateSubsetBracket)
 
-statesInfo$state.region
+stateSubsetBracket$state.region
 dim(stateSubsetBracket)
 

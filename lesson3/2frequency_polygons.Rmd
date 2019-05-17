@@ -6,14 +6,14 @@
 + Note that *sum(..count..)* will sum across color, so the percentages displayed are percentages of total users. To plot percentages within each group, you can try *y = ..density...*
 ```{r}
 getwd()
-setwd('/Users/henry/Desktop/data_science/Data_Analysis_with_R_udacity/lesson3')
+setwd("/Users/henry/Desktop/Data Science/ud651_data_analysis_with_R/lesson3")
 
 pf<-read.csv('pseudo_facebook.tsv',sep='\t')
 library(gridExtra)
 library(ggplot2)
 names(pf)
 #histogram
-p1<-ggplot(data=subset(pf,is.na(gender)),
+p1<-ggplot(data=subset(pf,!is.na(gender)),
            aes(x=friend_count))+
   geom_histogram(binwidth=10)
 #frequency polygon
@@ -24,6 +24,8 @@ p2<-ggplot(data = subset(pf,!is.na(gender)),
   xlab('Friend Count') + 
   ylab('Number of users with that friend count')
 
+
+
 #show the proportions instead of raw counts, so we will pass in y
 #percentages of total users
 p3<-ggplot(data = subset(pf,!is.na(gender)),
@@ -32,6 +34,8 @@ p3<-ggplot(data = subset(pf,!is.na(gender)),
   scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50)) + 
   xlab('Friend Count-binwidth=10') + 
   ylab('Proportion of users with that friend count')
+
+
 #plot percentages within each group
 p4<-ggplot(data = subset(pf,!is.na(gender)),
            aes(x=friend_count,y=..density..))+

@@ -78,7 +78,7 @@ You may have noticed that all these functions are very similar:
 Together these properties make it easy to chain together multiple simple steps to achieve a complex result.
 
 # Grouped operations
-These verbs are useful, but they become really powerful when you combine them with the idea of ¡°group by¡±, repeating the operation individually on each group. 
+These verbs are useful, but they become really powerful when you combine them with the idea of ??group by??, repeating the operation individually on each group. 
 + In dplyr, you use the **group_by()** function to describe how to break a dataset down into groups. You can then use the resulting object in the exactly the same functions as above.
 + Of the five verbs, *arrange() and select()* are unaffected by grouping. 
 + Group-wise *mutate() and arrange()* are most useful in conjunction with window functions, and are described in detail in the corresponding vignette(). 
@@ -89,8 +89,8 @@ These verbs are useful, but they become really powerful when you combine them wi
 pf_f<-filter(pf,!is.na(gender),!is.na(tenure))
 names(pf_f)
 ##first groupby,second summarise
-age_groups<-group_by(pf_f,age)
-pf_by_age<-summarise(age_groups,
+age_groups<-dplyr::group_by(pf_f,age)
+pf_by_age<-dplyr::summarise(age_groups,
           count=n(),
           tenure_avg=mean(tenure),
           tenure_IQR=IQR(tenure)

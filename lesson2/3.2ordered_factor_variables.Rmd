@@ -29,10 +29,14 @@ levels(state.f)
 table(state.f)
 #generate a character vector
 status.rank <- c("low", "middle", "low", "low", "low", "low", "middle","low", "middle","middle", "middle", "middle", "middle",  "high", "high", "low", "middle","middle", "low", "high")
-is.character((status.rank))
+is.character(status.rank)
+
+
+
 #use the levels argument to indicate the correct ordering of the categories
 status.rank.f<-factor(status.rank,levels=c("low","middle","high"))
 status.rank.f
+is.character(status.rank.f)
 levels(status.rank.f)
 
 ```

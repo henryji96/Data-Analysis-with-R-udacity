@@ -14,7 +14,9 @@ getwd()
 list.files()
 pf<-read.csv('pseudo_facebook.tsv',sep='\t')
 dim(pf)
+
 names(pf)
+
 head(pf,5)
 ```
 
@@ -114,7 +116,7 @@ dim(na.omit(pf))
 ggplot(aes(x = friend_count), data = subset(pf, !is.na(gender))) + 
   geom_histogram(binwidth = 1) + 
   scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 200)) + 
-  facet_wrap(~gender)
+  facet_wrap(gender ~ .)
 
 ##remove any observations that have na in them, not necessarily just for gender variable
 ggplot(aes(x = friend_count), data = na.omit((pf))) + 

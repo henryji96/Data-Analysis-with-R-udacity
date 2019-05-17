@@ -8,7 +8,7 @@
 
 # Prelim: Export from Excel, Google Spreadsheets, download as CSV, etc.
 
-
+setwd("/Users/henry/Desktop/Data Science/ud651_data_analysis_with_R/lesson2")
 #
 # Load CSV files
 #
@@ -33,7 +33,8 @@ str(income)
 head(income)
 dim(income)
 names(income)
-
+colnames(income)
+rownames(income)
 # Quick summary
 summary(income)
 

@@ -76,7 +76,6 @@ mystery
 
 
 
-
 # Mystery is a vector that contains the number of characters
 # for each of the names in udacious, including your name.
 
@@ -153,6 +152,8 @@ names(mtcars)
 
 # You should also see how many observations (obs.) are in the
 # the data frame and the number of variables on each observation.
+
+
 
 # 7. To get more information on the data set and the variables
 # run the this next line of code.

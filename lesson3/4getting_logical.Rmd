@@ -6,7 +6,8 @@ This is helpful because we wanna know whether a user has used a certain feature 
 + For example, it may no matter how many times a person check in but whether he had checked in.
 ```{r}
 getwd()
-setwd('/Users/henry/Desktop/data_science/Data_Analysis_with_R_udacity/lesson3')
+setwd("/Users/henry/Desktop/Data Science/ud651_data_analysis_with_R/lesson3")
+
 pf<-read.csv('pseudo_facebook.tsv',sep='\t')
 
 summary(pf$mobile_likes)

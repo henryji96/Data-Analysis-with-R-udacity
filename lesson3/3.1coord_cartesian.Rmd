@@ -37,6 +37,7 @@ p1<-p0+scale_x_continuous(limits = c(325, 500))
 # The data is unchanged, and we just view a small portion of the original
 # plot. Note how smooth continues past the points visible on this plot.
 p2<-p0+coord_cartesian(xlim = c(325, 500))
+
 # Simiarly, we can use expand = FALSE to turn off expansion with the
 # default limits
 p3<-p0+coord_cartesian(xlim = c(325, 500),expand = FALSE)

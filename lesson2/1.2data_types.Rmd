@@ -47,7 +47,11 @@ rnames <- c("R1", "R2")
 cnames <- c("C1", "C2") 
 mymatrix <- matrix(cells, nrow=2, ncol=2, byrow=TRUE,
   dimnames=list(rnames, cnames))
+
 mymatrix
+
+rownames(mymatrix)
+colnames(mymatrix)
 ```
 
 #Data Frames
@@ -66,6 +70,8 @@ mydf[1:2] #columns 1,2 of df
 mydf[c("ID","Color")]#ID and Color column
 mydf$ID      #variable ID in the dataframe
 
+mydf[1:2,]   #row 1:2, all col
+
 mydf
 ```
 
@@ -81,12 +87,15 @@ mydf<-data.frame(a,f)
 
 list1 <- list(name="Fred", mynumbers=a, myframe=mydf, age=18)
 list1
+
+list1[1]
+list1[[1]]
 ```
 ```{r}
-# example of a list containing two lists 
+# example of a list containing two lists using c
 list2<-list(name="Henry", age=21)
 v<-c(list1,list2)
-v[1:8]
+v[1:7]
 ```
 ```{r}
 #Identify elements of a list using the [[]] convention
@@ -131,6 +140,7 @@ levels(rating)
 
 str(rating)
 
+
 ```
 
 R will treat factors as nominal variables and ordered factors as ordinal variables in statistical proceedures and graphical analyses. 
@@ -146,9 +156,11 @@ names(rating)
 current_obj=ls()# list current objects
 str(current_obj)
 
-rm(list=ls()) # delete all object-global environment
-ls()
 ```
 
 
+```{r}
+rm(list=ls()) # delete all object-global environment
+ls()
+```
 
